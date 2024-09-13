@@ -1,0 +1,47 @@
+# Python-specific ignores
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Virtual environment
+# venv/
+# env/
+# *.egg-info/
+# dist/
+# build/
+
+# Data
+data/
+# *.csv
+*.zip
+
+# Logs
+*.log
+
+# TensorFlow and Keras
+*.pb
+*.h5
+model/
+
+# Git LFS pointers
+*.gitattributes
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
+
+# DVC tracking files
+.dvc/
+
+# System files
+.DS_Store
+Thumbs.db
+
+#misceallenous
+# 66e31d6ee96cd_student_resource_3
