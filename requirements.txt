@@ -1,0 +1,6 @@
+numpy
+pandas
+tensorflow
+scikit-learn
+tqdm
+pillow
