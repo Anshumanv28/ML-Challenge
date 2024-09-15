@@ -1,11 +1,10 @@
+# Ensure necessary libraries are installed in Colab
 import re
-from src import constants
 import os
 import requests
 import pandas as pd
 import multiprocessing
 import time
-from time import time as timer
 from tqdm import tqdm
 import numpy as np
 from pathlib import Path
@@ -15,6 +14,16 @@ from PIL import Image, ImageFile
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.preprocessing import image
+import sys
+
+# Ensure correct module path
+sys.path.append('/content/src')
+
+# Check if constants module exists; use proper import
+try:
+    from src import constants  # Assuming constants.py is in the src directory
+except ModuleNotFoundError:
+    print("Ensure that 'src/constants.py' is in the correct location!")
 
 # Allow loading truncated images
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -23,8 +32,8 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 resnet_model = ResNet50(weights='imagenet', include_top=False, pooling='avg')
 
 # Function to extract image features using ResNet50
-def extract_image_features(image_path):
-    """Extract features from an image using ResNet50."""
+def extract_image_features_safe(image_path):
+    """Extract features from an image using ResNet50, with error handling."""
     try:
         img = image.load_img(image_path, target_size=(224, 224))
         x = image.img_to_array(img)
@@ -32,9 +41,9 @@ def extract_image_features(image_path):
         x = preprocess_input(x)
         features = resnet_model.predict(x)
         return features.flatten()
-    except Exception as e:
-        print(f"Failed to process image {image_path}: {str(e)}")
-        return np.zeros((2048,))  # Return a default feature vector if extraction fails
+    except OSError:
+        print(f"Image {image_path} is corrupted or truncated, skipping.")
+        return np.zeros((2048,))  # Return a default feature vector on error
 
 # Function to correct common mistakes in units
 def common_mistake(unit):
@@ -116,8 +125,8 @@ def download_images(image_links, download_folder, allow_multiprocessing=True):
                                          retries=3,
                                          delay=3)
 
-        # Reduce the number of processes to avoid overwhelming the system
-        with multiprocessing.Pool(16) as pool:
+        # Reduce the number of processes to avoid overwhelming the system in Colab
+        with multiprocessing.Pool(4) as pool:  # Use fewer processes in Colab
             list(
                 tqdm(pool.imap(download_image_partial, image_links),
                      total=len(image_links)))
