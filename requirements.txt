@@ -1,5 +1,6 @@
-pandas
-requests
-tqdm
 numpy
-Pillow
+pandas
+tensorflow
+scikit-learn
+tqdm
+pillow

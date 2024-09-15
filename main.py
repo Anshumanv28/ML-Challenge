@@ -1,5 +1,3 @@
-#this script will install all the necessary libraries for the main.py script to run
-#pip install -r requirements.txtimport numpy as np
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.preprocessing import image
