@@ -9,8 +9,9 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Virtual environment
-# venv/
-# env/
+*.venv/
+*.env/
+myenv/
 # *.egg-info/
 # dist/
 # build/
@@ -44,4 +45,4 @@ model/
 Thumbs.db
 
 #misceallenous
-# 66e31d6ee96cd_student_resource_3
+66e31d6ee96cd_student_resource_3
